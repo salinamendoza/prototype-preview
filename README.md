@@ -4,6 +4,8 @@
 
 Perfect for designers and developers who want to share work-in-progress with clients or stakeholders without making it public.
 
+**[Live Demo](https://salinamendoza.github.io/prototype-preview/)** · Password: `demo123`
+
 ## What You Get
 
 - **Password protection** — Keep your prototypes private until you're ready to share
