@@ -37,6 +37,8 @@ Claude handles all the technical details — generating password hashes, updatin
 
 5. **Deploy** — Enable GitHub Pages in your repo settings, or upload to any web host
 
+> **Note:** GitHub Pages works with public repos on free accounts. To use Pages with a private repo, you'll need [GitHub Pro](https://github.com/pricing).
+
 ## File Structure
 
 ```
