@@ -6,7 +6,7 @@ Perfect for designers and developers who want to share work-in-progress with cli
 
 **[Live Demo](https://salinamendoza.github.io/prototype-preview/)** · Password: `demo123`
 
-## What You Get
+## What you get
 
 - **Password protection** — Keep your prototypes private until you're ready to share
 - **Beautiful mobile previews** — Desktop visitors see your mobile designs in a realistic phone frame
@@ -19,7 +19,7 @@ Perfect for designers and developers who want to share work-in-progress with cli
 - **Netlify password?** → Requires paid plan
 - **Vercel?** → Overkill for static HTML
 - 
-## Quick Start with Claude Code
+## Quick start with Claude Code
 
 The easiest way to set this up is with [Claude Code](https://claude.ai/code). Just tell it what you want:
 
@@ -31,7 +31,7 @@ The easiest way to set this up is with [Claude Code](https://claude.ai/code). Ju
 
 Claude handles all the technical details — generating password hashes, updating config, organizing files.
 
-## Manual Setup
+## Manual setup
 
 1. **Fork or clone this repo**
 
@@ -45,7 +45,7 @@ Claude handles all the technical details — generating password hashes, updatin
 
 > **Note:** GitHub Pages works with public repos on free accounts. To use Pages with a private repo, you'll need [GitHub Pro](https://github.com/pricing).
 
-## File Structure
+## File structure
 
 ```
 prototype-preview/
@@ -56,7 +56,7 @@ prototype-preview/
     └── mobile-preview.html # Phone frame wrapper (included)
 ```
 
-## Mobile Preview Magic
+## Mobile preview magic
 
 For mobile prototypes, use the included phone frame wrapper:
 
@@ -67,7 +67,7 @@ prototypes/mobile-preview.html?src=your-mobile.html
 - **On desktop**: Shows your prototype in a realistic iPhone frame
 - **On mobile**: Redirects to the full native experience
 
-## Default Demo Password
+## Default demo password
 
 The template comes with password `demo123` — change this before sharing!
 
