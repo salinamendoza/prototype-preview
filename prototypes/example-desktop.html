@@ -3,377 +3,586 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Example Desktop Prototype</title>
+  <title>Pulse - Music Streaming</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-      background: #f5f5f5;
-      min-height: 100vh;
-    }
-
-    /* Header */
-    .header {
-      background: white;
-      border-bottom: 1px solid #e0e0e0;
-      padding: 16px 24px;
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #0a0a0f;
+      color: #fff;
+      height: 100vh;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      flex-direction: column;
     }
 
-    .logo {
-      font-size: 20px;
-      font-weight: 700;
-      color: #1a1a2e;
-    }
-
-    .nav {
+    .app {
       display: flex;
-      gap: 24px;
-    }
-
-    .nav a {
-      color: #666;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    .nav a:hover {
-      color: #1a1a2e;
-    }
-
-    .header-actions {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .btn {
-      padding: 8px 16px;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      border: none;
-      transition: all 0.2s;
-    }
-
-    .btn-secondary {
-      background: #f0f0f0;
-      color: #1a1a2e;
-    }
-
-    .btn-primary {
-      background: #667eea;
-      color: white;
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-    }
-
-    /* Main content */
-    .main {
-      display: flex;
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 24px;
-      gap: 24px;
+      flex: 1;
+      overflow: hidden;
     }
 
     /* Sidebar */
     .sidebar {
       width: 240px;
-      flex-shrink: 0;
+      background: #0f0f1a;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(255,255,255,0.05);
     }
 
-    .sidebar-section {
-      background: white;
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 16px;
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 32px;
+      padding: 0 8px;
     }
 
-    .sidebar-title {
-      font-size: 12px;
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-section {
+      margin-bottom: 32px;
+    }
+
+    .nav-title {
+      font-size: 11px;
       font-weight: 600;
-      color: #999;
+      color: rgba(255,255,255,0.4);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 1px;
+      padding: 0 8px;
       margin-bottom: 12px;
     }
 
-    .sidebar-item {
+    .nav-item {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
+      gap: 12px;
+      padding: 12px 8px;
       border-radius: 8px;
-      color: #666;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+    .nav-item.active { background: rgba(102, 126, 234, 0.2); color: #667eea; }
+    .nav-item svg { width: 20px; height: 20px; }
+
+    .playlists {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .playlist-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px;
+      border-radius: 6px;
       cursor: pointer;
       transition: background 0.2s;
     }
 
-    .sidebar-item:hover {
-      background: #f5f5f5;
-    }
+    .playlist-item:hover { background: rgba(255,255,255,0.05); }
 
-    .sidebar-item.active {
-      background: #667eea15;
-      color: #667eea;
-    }
-
-    .sidebar-icon {
-      width: 20px;
-      height: 20px;
-      background: currentColor;
-      border-radius: 4px;
-      opacity: 0.5;
-    }
-
-    /* Content area */
-    .content {
-      flex: 1;
-    }
-
-    .content-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-
-    .content-title {
-      font-size: 24px;
-      font-weight: 600;
-      color: #1a1a2e;
-    }
-
-    /* Cards grid */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 12px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-    }
-
-    .card-image {
-      height: 160px;
+    .playlist-cover {
+      width: 40px;
+      height: 40px;
+      border-radius: 6px;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      font-size: 48px;
-    }
-
-    .card-content {
-      padding: 16px;
-    }
-
-    .card-title {
       font-size: 16px;
-      font-weight: 600;
-      color: #1a1a2e;
-      margin-bottom: 4px;
     }
 
-    .card-description {
-      font-size: 14px;
-      color: #666;
-      margin-bottom: 12px;
+    .playlist-info {
+      flex: 1;
+      min-width: 0;
     }
 
-    .card-meta {
+    .playlist-name {
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .playlist-tracks {
+      font-size: 11px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* Main Content */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px 32px;
+    }
+
+    .main-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 12px;
-      color: #999;
+      margin-bottom: 32px;
     }
 
-    .card-tag {
-      background: #f0f0f0;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-weight: 500;
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 24px;
+      padding: 10px 20px;
+      width: 400px;
     }
 
-    /* Back link */
-    .back-link {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: #1a1a2e;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 8px;
-      text-decoration: none;
+    .search-bar input {
+      flex: 1;
+      background: none;
+      border: none;
+      color: #fff;
       font-size: 14px;
-      font-weight: 500;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      transition: transform 0.2s;
+      outline: none;
     }
 
-    .back-link:hover {
-      transform: translateY(-2px);
+    .search-bar input::placeholder { color: rgba(255,255,255,0.4); }
+    .search-bar svg { width: 18px; height: 18px; color: rgba(255,255,255,0.4); }
+
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f093fb, #f5576c);
+      cursor: pointer;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.03);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .card:hover {
+      background: rgba(255,255,255,0.08);
+      transform: translateY(-4px);
+    }
+
+    .card-image {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-image.gradient-1 { background: linear-gradient(135deg, #667eea, #764ba2); }
+    .card-image.gradient-2 { background: linear-gradient(135deg, #f093fb, #f5576c); }
+    .card-image.gradient-3 { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+    .card-image.gradient-4 { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+    .card-image.gradient-5 { background: linear-gradient(135deg, #fa709a, #fee140); }
+    .card-image.gradient-6 { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
+
+    .card-image::after {
+      content: '🎵';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 40px;
+    }
+
+    .play-overlay {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      width: 48px;
+      height: 48px;
+      background: #1db954;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.3s;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+
+    .card:hover .play-overlay {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .play-overlay svg { width: 24px; height: 24px; fill: #000; margin-left: 2px; }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-subtitle {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Now Playing Bar */
+    .now-playing {
+      background: linear-gradient(180deg, #181820 0%, #0f0f1a 100%);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .np-track {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      width: 240px;
+    }
+
+    .np-cover {
+      width: 56px;
+      height: 56px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .np-info h4 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .np-info p {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .np-controls {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .np-buttons {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .np-btn {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.7);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .np-btn:hover { color: #fff; transform: scale(1.1); }
+    .np-btn svg { width: 20px; height: 20px; }
+
+    .np-btn.play {
+      width: 40px;
+      height: 40px;
+      background: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+    }
+
+    .np-btn.play svg { width: 18px; height: 18px; margin-left: 2px; }
+
+    .np-progress {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .np-time {
+      font-size: 11px;
+      color: rgba(255,255,255,0.5);
+      min-width: 40px;
+    }
+
+    .np-bar {
+      flex: 1;
+      height: 4px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 2px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .np-bar-fill {
+      width: 35%;
+      height: 100%;
+      background: #fff;
+      border-radius: 2px;
+    }
+
+    .np-bar:hover .np-bar-fill { background: #1db954; }
+
+    .np-extra {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      width: 200px;
+      justify-content: flex-end;
+    }
+
+    .volume-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .volume-bar {
+      width: 80px;
+      height: 4px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 2px;
+      cursor: pointer;
+    }
+
+    .volume-fill {
+      width: 70%;
+      height: 100%;
+      background: #fff;
+      border-radius: 2px;
     }
   </style>
 </head>
 <body>
-  <header class="header">
-    <div class="logo">AppName</div>
-    <nav class="nav">
-      <a href="#">Dashboard</a>
-      <a href="#">Projects</a>
-      <a href="#">Analytics</a>
-      <a href="#">Settings</a>
-    </nav>
-    <div class="header-actions">
-      <button class="btn btn-secondary">Help</button>
-      <button class="btn btn-primary">New Project</button>
-    </div>
-  </header>
-
-  <main class="main">
+  <div class="app">
     <aside class="sidebar">
-      <div class="sidebar-section">
-        <div class="sidebar-title">Workspace</div>
-        <div class="sidebar-item active">
-          <div class="sidebar-icon"></div>
-          <span>All Projects</span>
-        </div>
-        <div class="sidebar-item">
-          <div class="sidebar-icon"></div>
-          <span>Favorites</span>
-        </div>
-        <div class="sidebar-item">
-          <div class="sidebar-icon"></div>
-          <span>Recent</span>
-        </div>
-        <div class="sidebar-item">
-          <div class="sidebar-icon"></div>
-          <span>Shared</span>
-        </div>
+      <div class="logo">
+        <div class="logo-icon">🎵</div>
+        <span>Pulse</span>
       </div>
-      <div class="sidebar-section">
-        <div class="sidebar-title">Categories</div>
-        <div class="sidebar-item">
-          <div class="sidebar-icon"></div>
-          <span>Design</span>
-        </div>
-        <div class="sidebar-item">
-          <div class="sidebar-icon"></div>
-          <span>Development</span>
-        </div>
-        <div class="sidebar-item">
-          <div class="sidebar-icon"></div>
-          <span>Marketing</span>
+
+      <nav class="nav-section">
+        <a class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Home
+        </a>
+        <a class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Search
+        </a>
+        <a class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          Library
+        </a>
+      </nav>
+
+      <div class="nav-section">
+        <div class="nav-title">Your Playlists</div>
+        <div class="playlists">
+          <div class="playlist-item">
+            <div class="playlist-cover">🔥</div>
+            <div class="playlist-info">
+              <div class="playlist-name">Liked Songs</div>
+              <div class="playlist-tracks">234 tracks</div>
+            </div>
+          </div>
+          <div class="playlist-item">
+            <div class="playlist-cover">🌙</div>
+            <div class="playlist-info">
+              <div class="playlist-name">Late Night Vibes</div>
+              <div class="playlist-tracks">89 tracks</div>
+            </div>
+          </div>
+          <div class="playlist-item">
+            <div class="playlist-cover">💪</div>
+            <div class="playlist-info">
+              <div class="playlist-name">Workout Mix</div>
+              <div class="playlist-tracks">156 tracks</div>
+            </div>
+          </div>
+          <div class="playlist-item">
+            <div class="playlist-cover">☕</div>
+            <div class="playlist-info">
+              <div class="playlist-name">Morning Coffee</div>
+              <div class="playlist-tracks">67 tracks</div>
+            </div>
+          </div>
         </div>
       </div>
     </aside>
 
-    <div class="content">
-      <div class="content-header">
-        <h1 class="content-title">All Projects</h1>
-        <button class="btn btn-primary">+ Add Project</button>
-      </div>
+    <main class="main">
+      <header class="main-header">
+        <div class="search-bar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Search for artists, songs, or albums...">
+        </div>
+        <div class="user-menu">
+          <div class="user-avatar"></div>
+        </div>
+      </header>
 
-      <div class="cards-grid">
-        <div class="card">
-          <div class="card-image">1</div>
-          <div class="card-content">
-            <h3 class="card-title">Website Redesign</h3>
-            <p class="card-description">Complete overhaul of company website</p>
-            <div class="card-meta">
-              <span class="card-tag">Design</span>
-              <span>Updated 2h ago</span>
+      <section>
+        <h2 class="section-title">Made For You</h2>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-image gradient-1">
+              <div class="play-overlay"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
             </div>
+            <div class="card-title">Daily Mix 1</div>
+            <div class="card-subtitle">Neon Dreams, Midnight Sun, Aurora</div>
+          </div>
+          <div class="card">
+            <div class="card-image gradient-2">
+              <div class="play-overlay"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+            </div>
+            <div class="card-title">Discover Weekly</div>
+            <div class="card-subtitle">Your weekly mixtape of fresh music</div>
+          </div>
+          <div class="card">
+            <div class="card-image gradient-3">
+              <div class="play-overlay"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+            </div>
+            <div class="card-title">Release Radar</div>
+            <div class="card-subtitle">Catch all the latest releases</div>
+          </div>
+          <div class="card">
+            <div class="card-image gradient-4">
+              <div class="play-overlay"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+            </div>
+            <div class="card-title">Chill Beats</div>
+            <div class="card-subtitle">Laid back beats to relax</div>
           </div>
         </div>
+      </section>
 
-        <div class="card">
-          <div class="card-image">2</div>
-          <div class="card-content">
-            <h3 class="card-title">Mobile App</h3>
-            <p class="card-description">iOS and Android application</p>
-            <div class="card-meta">
-              <span class="card-tag">Development</span>
-              <span>Updated 1d ago</span>
+      <section>
+        <h2 class="section-title">Recently Played</h2>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-image gradient-5">
+              <div class="play-overlay"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
             </div>
+            <div class="card-title">Midnight City</div>
+            <div class="card-subtitle">Neon Dreams</div>
+          </div>
+          <div class="card">
+            <div class="card-image gradient-6">
+              <div class="play-overlay"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+            </div>
+            <div class="card-title">Starlight</div>
+            <div class="card-subtitle">Cosmic Waves</div>
+          </div>
+          <div class="card">
+            <div class="card-image gradient-1">
+              <div class="play-overlay"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+            </div>
+            <div class="card-title">Electric Feel</div>
+            <div class="card-subtitle">Synthwave Collective</div>
+          </div>
+          <div class="card">
+            <div class="card-image gradient-3">
+              <div class="play-overlay"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+            </div>
+            <div class="card-title">Neon Lights</div>
+            <div class="card-subtitle">Digital Sunrise</div>
           </div>
         </div>
+      </section>
+    </main>
+  </div>
 
-        <div class="card">
-          <div class="card-image">3</div>
-          <div class="card-content">
-            <h3 class="card-title">Brand Guidelines</h3>
-            <p class="card-description">Updated brand identity system</p>
-            <div class="card-meta">
-              <span class="card-tag">Design</span>
-              <span>Updated 3d ago</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-image">4</div>
-          <div class="card-content">
-            <h3 class="card-title">API Integration</h3>
-            <p class="card-description">Third-party service connections</p>
-            <div class="card-meta">
-              <span class="card-tag">Development</span>
-              <span>Updated 1w ago</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-image">5</div>
-          <div class="card-content">
-            <h3 class="card-title">Email Campaign</h3>
-            <p class="card-description">Q4 marketing email templates</p>
-            <div class="card-meta">
-              <span class="card-tag">Marketing</span>
-              <span>Updated 2w ago</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-image">6</div>
-          <div class="card-content">
-            <h3 class="card-title">User Research</h3>
-            <p class="card-description">Customer interview findings</p>
-            <div class="card-meta">
-              <span class="card-tag">Design</span>
-              <span>Updated 2w ago</span>
-            </div>
-          </div>
-        </div>
+  <footer class="now-playing">
+    <div class="np-track">
+      <div class="np-cover">🎵</div>
+      <div class="np-info">
+        <h4>Midnight City</h4>
+        <p>Neon Dreams</p>
       </div>
     </div>
-  </main>
 
-  <a href="../index.html" class="back-link">Back to Demos</a>
+    <div class="np-controls">
+      <div class="np-buttons">
+        <button class="np-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></button>
+        <button class="np-btn"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2"/></svg></button>
+        <button class="np-btn play"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
+        <button class="np-btn"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2"/></svg></button>
+        <button class="np-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
+      </div>
+      <div class="np-progress">
+        <span class="np-time">1:24</span>
+        <div class="np-bar"><div class="np-bar-fill"></div></div>
+        <span class="np-time">4:02</span>
+      </div>
+    </div>
+
+    <div class="np-extra">
+      <div class="volume-control">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        <div class="volume-bar"><div class="volume-fill"></div></div>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>

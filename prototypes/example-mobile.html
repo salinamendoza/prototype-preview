@@ -2,402 +2,309 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Example Mobile Prototype</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pulse - Now Playing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-      background: #f5f5f5;
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1a 100%);
       min-height: 100vh;
-      max-width: 430px;
-      margin: 0 auto;
+      color: #fff;
+      padding-bottom: 140px;
     }
 
-    /* Status bar simulation */
-    .status-bar {
-      background: white;
-      padding: 12px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .status-bar-left {
-      color: #1a1a2e;
-    }
-
-    .status-bar-right {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
-
-    .status-icon {
-      width: 18px;
-      height: 12px;
-      background: #1a1a2e;
-      border-radius: 2px;
-    }
-
-    /* Header */
     .header {
-      background: white;
       padding: 16px 20px;
-      border-bottom: 1px solid #e0e0e0;
-    }
-
-    .header-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
     }
 
-    .greeting {
+    .header-btn {
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      border-radius: 50%;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .header-title {
       font-size: 14px;
-      color: #666;
+      font-weight: 500;
+      color: rgba(255,255,255,0.7);
     }
 
-    .name {
+    .album-section {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .album-art {
+      width: 280px;
+      height: 280px;
+      margin: 0 auto 32px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      box-shadow: 0 20px 60px rgba(102, 126, 234, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+
+    .track-info {
+      margin-bottom: 32px;
+    }
+
+    .track-title {
       font-size: 24px;
       font-weight: 700;
-      color: #1a1a2e;
+      margin-bottom: 8px;
     }
 
-    .avatar {
-      width: 44px;
-      height: 44px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 50%;
-    }
-
-    /* Search bar */
-    .search-bar {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: #f5f5f5;
-      padding: 12px 16px;
-      border-radius: 12px;
-    }
-
-    .search-icon {
-      width: 20px;
-      height: 20px;
-      background: #999;
-      border-radius: 50%;
-      opacity: 0.5;
-    }
-
-    .search-bar input {
-      flex: 1;
-      border: none;
-      background: transparent;
+    .track-artist {
       font-size: 16px;
-      color: #1a1a2e;
+      color: rgba(255,255,255,0.6);
     }
 
-    .search-bar input::placeholder {
-      color: #999;
+    .progress-section {
+      padding: 0 20px;
+      margin-bottom: 24px;
     }
 
-    .search-bar input:focus {
-      outline: none;
+    .progress-bar {
+      height: 4px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 2px;
+      margin-bottom: 8px;
+      overflow: hidden;
+      cursor: pointer;
     }
 
-    /* Content */
-    .content {
-      padding: 20px;
+    .progress-fill {
+      width: 35%;
+      height: 100%;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      border-radius: 2px;
+      transition: width 0.3s;
     }
 
-    .section-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: #1a1a2e;
-      margin-bottom: 16px;
+    .progress-time {
       display: flex;
       justify-content: space-between;
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .controls {
+      display: flex;
       align-items: center;
+      justify-content: center;
+      gap: 24px;
+      padding: 0 20px;
+      margin-bottom: 32px;
     }
 
-    .see-all {
-      font-size: 14px;
-      color: #667eea;
-      font-weight: 500;
+    .control-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: opacity 0.2s, transform 0.2s;
     }
 
-    /* Quick actions */
-    .quick-actions {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-bottom: 28px;
+    .control-btn:hover { opacity: 1; }
+    .control-btn:active { transform: scale(0.95); }
+
+    .control-btn svg { width: 28px; height: 28px; }
+
+    .play-btn {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
     }
 
-    .action-item {
+    .play-btn svg { width: 32px; height: 32px; margin-left: 4px; }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      padding: 0 20px;
+    }
+
+    .action-btn {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 8px;
-    }
-
-    .action-icon {
-      width: 56px;
-      height: 56px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 20px;
-    }
-
-    .action-label {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.6);
       font-size: 12px;
-      color: #666;
-      text-align: center;
+      cursor: pointer;
     }
 
-    /* Cards */
-    .card {
-      background: white;
-      border-radius: 16px;
-      padding: 16px;
-      margin-bottom: 12px;
-      display: flex;
-      gap: 16px;
-    }
+    .action-btn svg { width: 24px; height: 24px; }
+    .action-btn:hover { color: #fff; }
+    .action-btn.active { color: #667eea; }
 
-    .card-icon {
-      width: 48px;
-      height: 48px;
-      background: #f0f0f0;
-      border-radius: 12px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-    }
-
-    .card-content {
-      flex: 1;
-    }
-
-    .card-title {
-      font-size: 16px;
-      font-weight: 600;
-      color: #1a1a2e;
-      margin-bottom: 4px;
-    }
-
-    .card-subtitle {
-      font-size: 14px;
-      color: #666;
-      margin-bottom: 8px;
-    }
-
-    .card-meta {
-      font-size: 12px;
-      color: #999;
-    }
-
-    .card-action {
-      display: flex;
-      align-items: center;
-      color: #667eea;
-      font-size: 20px;
-    }
-
-    /* Tab bar */
-    .tab-bar {
+    .bottom-nav {
       position: fixed;
       bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 430px;
-      background: white;
-      border-top: 1px solid #e0e0e0;
-      padding: 12px 20px 28px;
+      left: 0;
+      right: 0;
+      background: rgba(15, 15, 26, 0.95);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 12px 0;
+      padding-bottom: max(12px, env(safe-area-inset-bottom));
       display: flex;
       justify-content: space-around;
     }
 
-    .tab-item {
+    .nav-item {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 4px;
-      color: #999;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.5);
+      font-size: 10px;
+      cursor: pointer;
     }
 
-    .tab-item.active {
-      color: #667eea;
-    }
-
-    .tab-icon {
-      width: 24px;
-      height: 24px;
-      background: currentColor;
-      border-radius: 6px;
-      opacity: 0.7;
-    }
-
-    .tab-label {
-      font-size: 11px;
-      font-weight: 500;
-    }
-
-    /* Bottom padding for tab bar */
-    .content {
-      padding-bottom: 100px;
-    }
-
-    /* Back link - shown on desktop */
-    .back-link {
-      display: none;
-      position: fixed;
-      bottom: 100px;
-      right: 20px;
-      background: #1a1a2e;
-      color: white;
-      padding: 10px 16px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 500;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-
-    @media (min-width: 500px) {
-      .back-link {
-        display: block;
-      }
-    }
+    .nav-item svg { width: 24px; height: 24px; }
+    .nav-item.active { color: #667eea; }
   </style>
 </head>
 <body>
-  <div class="status-bar">
-    <span class="status-bar-left">9:41</span>
-    <div class="status-bar-right">
-      <div class="status-icon"></div>
-      <div class="status-icon"></div>
-      <div class="status-icon"></div>
-    </div>
-  </div>
-
   <header class="header">
-    <div class="header-top">
-      <div>
-        <p class="greeting">Good morning</p>
-        <h1 class="name">Sarah</h1>
-      </div>
-      <div class="avatar"></div>
-    </div>
-    <div class="search-bar">
-      <div class="search-icon"></div>
-      <input type="text" placeholder="Search...">
-    </div>
+    <button class="header-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </button>
+    <span class="header-title">NOW PLAYING</span>
+    <button class="header-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+    </button>
   </header>
 
-  <main class="content">
-    <div class="section-title">
-      Quick Actions
+  <section class="album-section">
+    <div class="album-art">🎵</div>
+    <div class="track-info">
+      <h1 class="track-title">Midnight City</h1>
+      <p class="track-artist">Neon Dreams</p>
     </div>
-    <div class="quick-actions">
-      <div class="action-item">
-        <div class="action-icon">+</div>
-        <span class="action-label">New</span>
-      </div>
-      <div class="action-item">
-        <div class="action-icon">S</div>
-        <span class="action-label">Scan</span>
-      </div>
-      <div class="action-item">
-        <div class="action-icon">U</div>
-        <span class="action-label">Upload</span>
-      </div>
-      <div class="action-item">
-        <div class="action-icon">M</div>
-        <span class="action-label">More</span>
-      </div>
-    </div>
+  </section>
 
-    <div class="section-title">
-      Recent Items
-      <span class="see-all">See all</span>
+  <section class="progress-section">
+    <div class="progress-bar" onclick="updateProgress(event)">
+      <div class="progress-fill" id="progress"></div>
     </div>
+    <div class="progress-time">
+      <span id="current">1:24</span>
+      <span>4:02</span>
+    </div>
+  </section>
 
-    <div class="card">
-      <div class="card-icon">D</div>
-      <div class="card-content">
-        <h3 class="card-title">Design System</h3>
-        <p class="card-subtitle">UI component library</p>
-        <span class="card-meta">Modified 2 hours ago</span>
-      </div>
-      <div class="card-action">&rarr;</div>
-    </div>
+  <section class="controls">
+    <button class="control-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+    </button>
+    <button class="control-btn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5" stroke="currentColor" stroke-width="2"/></svg>
+    </button>
+    <button class="control-btn play-btn" onclick="togglePlay()">
+      <svg viewBox="0 0 24 24" fill="currentColor" id="play-icon"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+    </button>
+    <button class="control-btn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2"/></svg>
+    </button>
+    <button class="control-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+    </button>
+  </section>
 
-    <div class="card">
-      <div class="card-icon">P</div>
-      <div class="card-content">
-        <h3 class="card-title">Project Brief</h3>
-        <p class="card-subtitle">Q4 planning document</p>
-        <span class="card-meta">Modified yesterday</span>
-      </div>
-      <div class="card-action">&rarr;</div>
-    </div>
+  <section class="actions">
+    <button class="action-btn" onclick="this.classList.toggle('active')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <span>Like</span>
+    </button>
+    <button class="action-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      <span>Share</span>
+    </button>
+    <button class="action-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span>Download</span>
+    </button>
+  </section>
 
-    <div class="card">
-      <div class="card-icon">M</div>
-      <div class="card-content">
-        <h3 class="card-title">Meeting Notes</h3>
-        <p class="card-subtitle">Weekly sync summary</p>
-        <span class="card-meta">Modified 3 days ago</span>
-      </div>
-      <div class="card-action">&rarr;</div>
-    </div>
-
-    <div class="card">
-      <div class="card-icon">B</div>
-      <div class="card-content">
-        <h3 class="card-title">Brand Assets</h3>
-        <p class="card-subtitle">Logos and guidelines</p>
-        <span class="card-meta">Modified 1 week ago</span>
-      </div>
-      <div class="card-action">&rarr;</div>
-    </div>
-  </main>
-
-  <nav class="tab-bar">
-    <div class="tab-item active">
-      <div class="tab-icon"></div>
-      <span class="tab-label">Home</span>
-    </div>
-    <div class="tab-item">
-      <div class="tab-icon"></div>
-      <span class="tab-label">Files</span>
-    </div>
-    <div class="tab-item">
-      <div class="tab-icon"></div>
-      <span class="tab-label">Search</span>
-    </div>
-    <div class="tab-item">
-      <div class="tab-icon"></div>
-      <span class="tab-label">Profile</span>
-    </div>
+  <nav class="bottom-nav">
+    <button class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Home</span>
+    </button>
+    <button class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>Search</span>
+    </button>
+    <button class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      <span>Now Playing</span>
+    </button>
+    <button class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </button>
   </nav>
 
-  <a href="../index.html" class="back-link">Back to Demos</a>
+  <script>
+    let isPlaying = false;
+
+    function togglePlay() {
+      isPlaying = !isPlaying;
+      const icon = document.getElementById('play-icon');
+      if (isPlaying) {
+        icon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+      } else {
+        icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
+      }
+    }
+
+    function updateProgress(e) {
+      const bar = e.currentTarget;
+      const percent = (e.offsetX / bar.offsetWidth) * 100;
+      document.getElementById('progress').style.width = percent + '%';
+      const totalSeconds = 242;
+      const currentSeconds = Math.floor((percent / 100) * totalSeconds);
+      const mins = Math.floor(currentSeconds / 60);
+      const secs = currentSeconds % 60;
+      document.getElementById('current').textContent = mins + ':' + secs.toString().padStart(2, '0');
+    }
+  </script>
 </body>
 </html>
