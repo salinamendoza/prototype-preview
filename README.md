@@ -18,7 +18,7 @@ Perfect for designers and developers who want to share work-in-progress with cli
 - **Figma/Lovable links?** → No password protection, can't customize
 - **Netlify password?** → Requires paid plan
 - **Vercel?** → Overkill for static HTML
-- 
+  
 ## Quick start with Claude Code
 
 The easiest way to set this up is with [Claude Code](https://claude.ai/code). Just tell it what you want:
