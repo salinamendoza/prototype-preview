@@ -1,6 +1,6 @@
 # Prototype Preview
 
-**Share your prototypes privately with a simple password-protected demo site.**
+**Share WIP prototypes with clients. Password-protected, no backend required.**
 
 Perfect for designers and developers who want to share work-in-progress with clients or stakeholders without making it public.
 
@@ -13,6 +13,12 @@ Perfect for designers and developers who want to share work-in-progress with cli
 - **No build tools** — Just HTML files. Drop in your prototypes and go
 - **Free hosting** — Works perfectly with GitHub Pages
 
+## Why not just use..
+
+- **Figma/Lovable links?** → No password protection, can't customize
+- **Netlify password?** → Requires paid plan
+- **Vercel?** → Overkill for static HTML
+- 
 ## Quick Start with Claude Code
 
 The easiest way to set this up is with [Claude Code](https://claude.ai/code). Just tell it what you want:
