@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prototype Preview</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      padding: 40px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 600;
+      color: #1a1a2e;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .subtitle {
+      color: #666;
+      text-align: center;
+      margin-bottom: 32px;
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 6px;
+    }
+
+    input[type="password"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input[type="password"]:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .error {
+      color: #dc2626;
+      font-size: 14px;
+      margin-top: 8px;
+      text-align: center;
+      display: none;
+    }
+
+    .error.show {
+      display: block;
+    }
+
+    /* Demo list styles */
+    .demo-list {
+      display: none;
+    }
+
+    .demo-list.show {
+      display: block;
+    }
+
+    .demo-item {
+      display: block;
+      padding: 16px 20px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      text-decoration: none;
+      color: #1a1a2e;
+      font-weight: 500;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .demo-item:hover {
+      background: #e9ecef;
+      transform: translateX(4px);
+    }
+
+    .demo-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .login-form {
+      display: block;
+    }
+
+    .login-form.hide {
+      display: none;
+    }
+
+    .logout-btn {
+      margin-top: 24px;
+      background: #6b7280;
+    }
+
+    .logout-btn:hover {
+      background: #4b5563;
+      box-shadow: 0 4px 12px rgba(107, 114, 128, 0.4);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Prototype Preview</h1>
+    <p class="subtitle">Enter the password to view demos</p>
+
+    <div class="login-form" id="loginForm">
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter password" autocomplete="off">
+      </div>
+      <button type="button" id="submitBtn">Access Demos</button>
+      <p class="error" id="error">Incorrect password. Please try again.</p>
+    </div>
+
+    <div class="demo-list" id="demoList">
+      <!-- Demo links will be inserted here -->
+    </div>
+  </div>
+
+  <script>
+    // ===========================================
+    // CONFIGURATION - Edit these values
+    // ===========================================
+
+    // SHA-256 hash of your password
+    // Default hash is for password: "demo123"
+    const PASSWORD_HASH = 'b8e6dd07cdc00ee606c2ae620db5d8d2c2a1e5a9f9b7c5c57dd8ff8d1dd9e4a8';
+
+    // List of demos to display after authentication
+    const demos = [
+      { name: "Example Desktop Prototype", url: "prototypes/example-desktop.html" },
+      { name: "Example Mobile Prototype", url: "prototypes/mobile-preview.html?src=example-mobile.html" }
+    ];
+
+    // ===========================================
+    // Authentication Logic
+    // ===========================================
+
+    const SESSION_KEY = 'prototype_preview_auth';
+
+    async function hashPassword(password) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(password);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function checkSession() {
+      const session = sessionStorage.getItem(SESSION_KEY);
+      return session === PASSWORD_HASH;
+    }
+
+    function createSession() {
+      sessionStorage.setItem(SESSION_KEY, PASSWORD_HASH);
+    }
+
+    function clearSession() {
+      sessionStorage.removeItem(SESSION_KEY);
+    }
+
+    function showDemos() {
+      document.getElementById('loginForm').classList.add('hide');
+      const demoList = document.getElementById('demoList');
+      demoList.classList.add('show');
+
+      demoList.innerHTML = demos.map(demo =>
+        `<a href="${demo.url}" class="demo-item">${demo.name}</a>`
+      ).join('') + '<button class="logout-btn" onclick="logout()">Logout</button>';
+    }
+
+    function showLogin() {
+      document.getElementById('loginForm').classList.remove('hide');
+      document.getElementById('demoList').classList.remove('show');
+      document.getElementById('password').value = '';
+      document.getElementById('error').classList.remove('show');
+    }
+
+    function logout() {
+      clearSession();
+      showLogin();
+    }
+
+    async function handleSubmit() {
+      const password = document.getElementById('password').value;
+      const hash = await hashPassword(password);
+
+      if (hash === PASSWORD_HASH) {
+        createSession();
+        showDemos();
+      } else {
+        document.getElementById('error').classList.add('show');
+        document.getElementById('password').value = '';
+        document.getElementById('password').focus();
+      }
+    }
+
+    // Event listeners
+    document.getElementById('submitBtn').addEventListener('click', handleSubmit);
+    document.getElementById('password').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') handleSubmit();
+    });
+
+    // Check for existing session on load
+    if (checkSession()) {
+      showDemos();
+    }
+  </script>
+</body>
+</html>

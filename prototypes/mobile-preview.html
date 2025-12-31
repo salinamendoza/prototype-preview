@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mobile Preview</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .phone-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .phone-frame {
+      position: relative;
+      width: 430px;
+      height: 932px;
+      transform: scale(0.86);
+      transform-origin: top center;
+    }
+
+    /* Phone bezel */
+    .phone-bezel {
+      position: absolute;
+      inset: -16px;
+      background: #1a1a1a;
+      border-radius: 60px;
+      box-shadow:
+        0 0 0 2px #333,
+        0 25px 50px -12px rgba(0, 0, 0, 0.5),
+        inset 0 0 0 2px #0a0a0a;
+    }
+
+    /* Dynamic Island / Notch */
+    .notch {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 126px;
+      height: 37px;
+      background: #000;
+      border-radius: 24px;
+      z-index: 10;
+    }
+
+    /* Screen */
+    .phone-screen {
+      position: absolute;
+      inset: 0;
+      background: white;
+      border-radius: 44px;
+      overflow: hidden;
+    }
+
+    .phone-screen iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Home indicator */
+    .home-indicator {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 134px;
+      height: 5px;
+      background: #000;
+      border-radius: 3px;
+      z-index: 10;
+    }
+
+    /* Controls */
+    .controls {
+      display: flex;
+      gap: 16px;
+    }
+
+    .control-btn {
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .control-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Error state */
+    .error-state {
+      position: absolute;
+      inset: 0;
+      background: #f5f5f5;
+      border-radius: 44px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .error-state h2 {
+      font-size: 20px;
+      color: #1a1a2e;
+      margin-bottom: 8px;
+    }
+
+    .error-state p {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    .error-state code {
+      display: block;
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #e5e5e5;
+      border-radius: 8px;
+      font-size: 12px;
+      color: #333;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-container">
+    <div class="phone-frame">
+      <div class="phone-bezel"></div>
+      <div class="phone-screen" id="screen">
+        <!-- Iframe or error will be inserted here -->
+      </div>
+      <div class="notch"></div>
+      <div class="home-indicator"></div>
+    </div>
+    <div class="controls">
+      <a href="../index.html" class="control-btn">Back to Demos</a>
+      <button class="control-btn" onclick="openFullscreen()">Open Fullscreen</button>
+    </div>
+  </div>
+
+  <script>
+    // Get the source URL from query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const src = urlParams.get('src');
+
+    // Mobile detection
+    function isMobile() {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+        || window.innerWidth <= 768;
+    }
+
+    // Redirect mobile users directly to the prototype
+    if (isMobile() && src) {
+      window.location.href = src;
+    }
+
+    // Desktop: Show phone frame with iframe
+    const screen = document.getElementById('screen');
+
+    if (src) {
+      const iframe = document.createElement('iframe');
+      iframe.src = src;
+      iframe.title = 'Mobile Prototype Preview';
+      screen.appendChild(iframe);
+    } else {
+      screen.innerHTML = `
+        <div class="error-state">
+          <h2>No Source Specified</h2>
+          <p>Add a source file using the <code>src</code> query parameter:</p>
+          <code>mobile-preview.html?src=your-file.html</code>
+        </div>
+      `;
+    }
+
+    function openFullscreen() {
+      if (src) {
+        window.open(src, '_blank');
+      }
+    }
+  </script>
+</body>
+</html>
