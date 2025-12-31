@@ -1,99 +1,66 @@
 # Prototype Preview
 
-Password-protected demo site for sharing prototypes with stakeholders.
+**Share your prototypes privately with a simple password-protected demo site.**
 
-## Features
+Perfect for designers and developers who want to share work-in-progress with clients or stakeholders without making it public.
 
-- **Password Protection**: SHA-256 client-side hashing keeps your prototypes private
-- **Smart Mobile Preview**: Shows phone frame on desktop, redirects to native view on mobile
-- **Zero Build Process**: Pure HTML/CSS/JS - no dependencies, no bundlers
-- **Easy Hosting**: Works with GitHub Pages, Netlify, or any static hosting
+## What You Get
 
-## Quick Start
+- **Password protection** — Keep your prototypes private until you're ready to share
+- **Beautiful mobile previews** — Desktop visitors see your mobile designs in a realistic phone frame
+- **No build tools** — Just HTML files. Drop in your prototypes and go
+- **Free hosting** — Works perfectly with GitHub Pages
 
-1. **Clone this repository**
-   ```bash
-   git clone https://github.com/yourusername/prototype-preview.git
-   ```
+## Quick Start with Claude Code
 
-2. **Set your password hash**
+The easiest way to set this up is with [Claude Code](https://claude.ai/code). Just tell it what you want:
 
-   Generate a SHA-256 hash of your password:
-   ```javascript
-   // In browser console:
-   crypto.subtle.digest('SHA-256', new TextEncoder().encode('your-password'))
-     .then(hash => console.log(Array.from(new Uint8Array(hash))
-       .map(b => b.toString(16).padStart(2, '0')).join('')))
-   ```
+> "Use the prototype-preview template. Set the password to 'clientdemo2025' and add my prototype files from the /designs folder"
 
-   Replace the `PASSWORD_HASH` value in `index.html` with your hash.
+> "Change the password to 'newpassword' and add a new demo called 'Mobile App v2'"
 
-3. **Add your prototypes**
+> "Set up GitHub Pages for this repo"
 
-   Edit the `demos` array in `index.html`:
-   ```javascript
-   const demos = [
-     { name: "My Desktop App", url: "prototypes/my-app.html" },
-     { name: "Mobile Version", url: "prototypes/mobile-preview.html?src=my-mobile.html" }
-   ];
-   ```
+Claude handles all the technical details — generating password hashes, updating config, organizing files.
 
-4. **Deploy**
+## Manual Setup
 
-   Push to GitHub and enable GitHub Pages, or upload to any static hosting.
+1. **Fork or clone this repo**
+
+2. **Set your password** — Open `index.html` and find the `PASSWORD_HASH` line. Replace it with a hash of your password. (Or just ask Claude Code to do it!)
+
+3. **Add your prototypes** — Drop your HTML files in the `prototypes/` folder
+
+4. **Update the demo list** — Edit the `demos` array in `index.html` to list your prototypes
+
+5. **Deploy** — Enable GitHub Pages in your repo settings, or upload to any web host
 
 ## File Structure
 
 ```
 prototype-preview/
-├── LICENSE
-├── README.md
-├── index.html                    # Password-protected landing page
+├── index.html              # Password gate + demo list
 └── prototypes/
-    ├── example-desktop.html      # Sample desktop prototype
-    ├── example-mobile.html       # Sample mobile prototype
-    └── mobile-preview.html       # Phone frame wrapper template
+    ├── your-desktop.html   # Your desktop prototype
+    ├── your-mobile.html    # Your mobile prototype
+    └── mobile-preview.html # Phone frame wrapper (included)
 ```
 
-## Mobile Preview
+## Mobile Preview Magic
 
-The `mobile-preview.html` wrapper provides:
-- Phone frame display on desktop (430x960 viewport, scaled to 0.86)
-- Automatic redirect to native view on mobile devices
-- iPhone-style frame with notch
+For mobile prototypes, use the included phone frame wrapper:
 
-Usage:
 ```
-prototypes/mobile-preview.html?src=your-mobile-prototype.html
+prototypes/mobile-preview.html?src=your-mobile.html
 ```
 
-## Configuration
+- **On desktop**: Shows your prototype in a realistic iPhone frame
+- **On mobile**: Redirects to the full native experience
 
-### Password Hash
+## Default Demo Password
 
-In `index.html`, update the `PASSWORD_HASH` constant:
-```javascript
-const PASSWORD_HASH = 'your-sha256-hash-here';
-```
-
-Default password for demo: `demo123`
-
-### Demo List
-
-Customize the demos array to list your prototypes:
-```javascript
-const demos = [
-  { name: "Display Name", url: "path/to/prototype.html" },
-  // Add more demos...
-];
-```
-
-## Security Notes
-
-- Password hashing is client-side only - this provides basic access control, not true security
-- Anyone with the hash can access the content
-- For sensitive prototypes, consider server-side authentication
+The template comes with password `demo123` — change this before sharing!
 
 ## License
 
-MIT License - See [LICENSE](LICENSE) for details.
+MIT — Use it however you like.
